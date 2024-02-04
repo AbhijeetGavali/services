@@ -29,7 +29,8 @@ const validater = function (checks) {
       // }
       case "text": {
         if (
-          typeof check.value !== "string"
+          typeof check.value !== "string" ||
+          check.value.length == 0
           // || ! /[a-zA-Z]/g.test(check.value)
         ) {
           errors.push(CUSTOME_ERRORS(check.value, check.field).text);

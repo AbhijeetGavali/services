@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config/credits.env");
 const { TOKEN_TYPES } = require("../config/token_type");
+const User = require("../models/users");
 // const { connection } = require("../config/redis");
 // const service = require("../services/authentication.service");
 
@@ -48,11 +49,16 @@ const authorizeToken = (tokenFor) => async (req, res, next) => {
           .status(401)
           .json({ msg: "Token expired! Please request again" });
       } else {
+        if (tokenFor == TOKEN_TYPES.LOGIN) {
+          const user = await User.findById(result.id);
+          if (!user.isVerified)
+            return res.status(400).json({ code: 0, msg: "Email not verified" });
+        }
         if (result.token_type == tokenFor) {
           req.user = { ...result };
           return next();
         } else {
-          return res.status(401).json({ msg: "Token missused" });
+          return res.status(401).json({ msg: "Token miss-used" });
         }
       }
     });
