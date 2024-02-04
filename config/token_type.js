@@ -1,0 +1,7 @@
+const TOKEN_TYPES = {
+  PASSWORD_RESET: "PASSWORD_RESET",
+  OTP_CHECK: "OTP_CHECK",
+  LOGIN: "LOGIN",
+};
+
+module.exports = { TOKEN_TYPES };
