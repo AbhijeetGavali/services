@@ -84,6 +84,7 @@ controller.addBooking = async (req, res) => {
     });
     if (!available) {
       const services = await Booking.create(data);
+
       return res.status(200).json({ code: 1, result: "Booked" });
     }
     return res.status(400).json({ code: 0, result: "Not available" });
