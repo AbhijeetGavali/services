@@ -6,7 +6,11 @@ const router = express.Router();
 
 // routing in apis to controller modules
 router.use("/auth", require("./auth.routes"));
-router.use("/providers", require("./auth.routes"));
+router.use(
+  "/providers",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  require("./provider.routes"),
+);
 router.use(
   "/service",
   authorizeToken(TOKEN_TYPES.LOGIN),

@@ -1,17 +1,7 @@
-const bcrypt = require("bcryptjs");
-
-const service = require("../services/authentication.service");
-const emailService = require("../services/email.service");
-
-const emailTemplate = require("../helpers/emails/templates");
 const validater = require("../helpers/validater.js");
-const { generateOTP } = require("../helpers/otp.js");
-const { getToken } = require("../helpers/token.js");
-const { connection } = require("../config/redis.js");
-const { OTP_ACTIONS } = require("../config/otp_actions.js");
-const { TOKEN_TYPES } = require("../config/token_type.js");
 const Service = require("../models/services.js");
 const Provider = require("../models/provider.js");
+const db = require("mongodb");
 
 const controller = {};
 
@@ -91,7 +81,7 @@ controller.getServiceProviders = async (req, res) => {
       {
         $lookup: {
           from: "services",
-          localField: "serviceID",
+          localField: "serviceId",
           foreignField: "_id",
           as: "services",
         },
@@ -100,6 +90,11 @@ controller.getServiceProviders = async (req, res) => {
         $unwind: {
           path: "$services",
           preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          serviceId: new db.ObjectId(req.params.id),
         },
       },
       {

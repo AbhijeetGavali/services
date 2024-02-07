@@ -91,6 +91,7 @@ controller.signupprovider = async (req, res) => {
       { type: "text", value: data.firstName, field: "firstName" },
       { type: "text", value: data.lastName, field: "lastName" },
       { type: "text", value: data.serviceId, field: "serviceId" },
+      { type: "number", value: data.experience, field: "experience" },
       { type: "text", value: data.location, field: "location" },
       { type: "email", value: data.email },
       { type: "password", value: data.password },

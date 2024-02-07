@@ -1,7 +1,6 @@
 const { ROLE } = require("../config/roles");
 const Provider = require("../models/provider");
 const User = require("../models/users");
-const db = require("mongodb");
 const service = {};
 
 service.getUser = async (email) => {
