@@ -7,6 +7,7 @@ const router = express.Router();
 
 // signup user and return token
 router.post("/sign-up", controller.signup);
+router.post("/sign-up-provider", controller.signupprovider);
 
 // // signin user and return token
 router.post("/sign-in", controller.signin);

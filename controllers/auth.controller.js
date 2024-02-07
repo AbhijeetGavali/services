@@ -82,6 +82,77 @@ controller.signup = async (req, res) => {
   }
 };
 
+controller.signupprovider = async (req, res) => {
+  try {
+    const data = { ...req.body };
+
+    // validating inputs
+    const errorMessages = validater([
+      { type: "text", value: data.firstName, field: "firstName" },
+      { type: "text", value: data.lastName, field: "lastName" },
+      { type: "text", value: data.serviceId, field: "serviceId" },
+      { type: "text", value: data.location, field: "location" },
+      { type: "email", value: data.email },
+      { type: "password", value: data.password },
+    ]);
+
+    // if error in sign in return bad request
+    if (errorMessages.length > 0) {
+      return res.status(400).json({ code: 0, msg: errorMessages });
+    }
+
+    // check if user is exist in database with that email or mobile number
+    const isuser = await service.getUser(data.email);
+    delete isuser?.password;
+    console.log(isuser);
+    if (!isuser?._id) {
+      // creating user and getting id
+      data.password = await bcrypt.hash(data.password, 10);
+
+      const user = await service.createProvider(data);
+      console.log(user);
+      // return res.sendStatus(200);
+      const OTP = generateOTP();
+
+      // tokenize id to send in email to client for resetting password
+      const token = await getToken(
+        {
+          id: user._id,
+          email: data.email,
+          OTP_ACTION: OTP_ACTIONS.EMAIL_VERIFICATION,
+          token_type: TOKEN_TYPES.OTP_CHECK,
+        },
+        "15min",
+      );
+
+      await connection.set(
+        data.email + ":" + OTP_ACTIONS.EMAIL_VERIFICATION,
+        OTP,
+      );
+
+      const emailData = {
+        to: data.email,
+        subject: "Invite to HOME service Application",
+        body: emailTemplate.invite(
+          data.firstName + " " + data.lastName,
+          data.email,
+          OTP,
+        ),
+      };
+
+      await emailService.sendEmail(emailData);
+      return res
+        .status(200)
+        .json({ code: 1, msg: "User created successfully", otpToken: token });
+    } else {
+      return res.status(409).json({ code: 0, msg: "The user already exists" });
+    }
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
 controller.signin = async (req, res) => {
   try {
     // validating inputs

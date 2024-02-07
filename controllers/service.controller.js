@@ -89,6 +89,20 @@ controller.getServiceProviders = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "services",
+          localField: "serviceID",
+          foreignField: "_id",
+          as: "services",
+        },
+      },
+      {
+        $unwind: {
+          path: "$services",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
         $project: {
           "user.password": 0,
         },
