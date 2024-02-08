@@ -41,7 +41,7 @@ emailTemplate.invite = (name, email, OTP) => {
 					<h4
 						style="margin: unset; color: #212b36; display: inline-block; vertical-align: middle;"
 					>
-						Home Service Films
+						Home Service 
 					</h4>
 				</td>
 			</tr>
@@ -75,7 +75,7 @@ emailTemplate.invite = (name, email, OTP) => {
 						class="message"
 						style="font-weight: 400; font-size: 16px; line-height: 19px; text-align: center; color: #212b36; max-width: 28.3125rem; margin: 0 auto; padding: 1em;"
 					>
-					we welcomes you to collaborate on Home Service Films Platform
+					we welcomes you to collaborate on Home Service  Platform
 					</p>
 					<div class="email-container" style="padding-top: 1rem;">
 						<div
@@ -149,7 +149,7 @@ emailTemplate.resetPassword = (name, email, OTP) => {
 					<h4
 						style="margin: unset; color: #212b36; display: inline-block; vertical-align: middle;"
 					>
-						Home Service Films
+						Home Service 
 					</h4>
 				</td>
 			</tr>
