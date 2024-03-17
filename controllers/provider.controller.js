@@ -275,4 +275,15 @@ controller.getPRovidersSlotsDetailsById = async (req, res) => {
   }
 };
 
+controller.updateRating = async (req, res) => {
+  try {
+    const provider = await Provider.findById(req.params.id);
+
+    return res.status(200).json({ code: 1, result: "updated successfully" });
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
 module.exports = controller;

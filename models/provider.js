@@ -9,6 +9,7 @@ const ProviderSchema = new mongooes.Schema({
   rating: { type: Number, default: 0 },
   cost: { type: Number, default: 200 },
   location: { type: String },
+  experience: { type: Number, default: 0 },
 });
 
 const Provider = mongooes.model("Provider", ProviderSchema);

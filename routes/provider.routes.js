@@ -8,5 +8,6 @@ router.post("/slots/:id", controller.addBooking);
 router.get("/slots/:id", controller.getPRovidersSlotsById);
 router.get("/slots/details/:id", controller.getPRovidersSlotsDetailsById);
 router.get("/:id", controller.getPRovidersById);
+router.patch("/:id",controller.updateRating)
 
 module.exports = router;

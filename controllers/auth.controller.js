@@ -10,6 +10,7 @@ const { getToken } = require("../helpers/token.js");
 const { connection } = require("../config/redis.js");
 const { OTP_ACTIONS } = require("../config/otp_actions.js");
 const { TOKEN_TYPES } = require("../config/token_type.js");
+const { ROLE } = require("../config/roles.js");
 
 const controller = {};
 
@@ -240,6 +241,7 @@ controller.sendResetLink = async (req, res) => {
       await emailService.sendEmail(emailData);
       return res.status(200).json({
         code: 1,
+        type: isuser.role === ROLE.USER ? 1 : 0,
         msg: "If your account exists with this email you will recirve an OTP to reset password",
         token,
       });

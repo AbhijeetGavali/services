@@ -21,6 +21,7 @@ service.createProvider = async (data) => {
     total_customers: data.total_customers,
     rating: data.rating,
     cost: data.cost,
+    experience: data.experience,
     location: data.location,
     serviceId: data.serviceId,
     userId: user._id,

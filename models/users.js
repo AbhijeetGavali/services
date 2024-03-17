@@ -3,6 +3,7 @@ const { ROLE } = require("../config/roles");
 
 const UserSchema = new mongooes.Schema({
   profilePhoto: { type: String },
+  phone: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String },
   password: { type: String, required: true },
