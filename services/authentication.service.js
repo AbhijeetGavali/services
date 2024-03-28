@@ -36,4 +36,11 @@ service.updatePassword = async ({ userId, password }) => {
   return user;
 };
 
+service.updateDetails = async ({ userId, details }) => {
+  const user = await User.findByIdAndUpdate(userId, details);
+  await Provider.findOneAndUpdate({ userId }, details);
+  delete user?.password;
+  return user;
+};
+
 module.exports = service;

@@ -3,15 +3,16 @@
 [x] POST validate otp API
 [x] POST Auth API
 [x] POST Sign In  API
-[x] PUT change password API
+[x] PATCH change password API
 [x] GET Total services list API 
 [x] GET service providers list API
-[] GET search providers API - by name only.
+[x] GET search providers API - by name only.
 [x] GET search nearby provider API 
 [x] GET single service provider API
-[x] POST  book appointment API
-[x] GET appointments list API
-[] POST rating API
+[x] POST book appointment API - 2hr fixed time slot
+[x] GET appointments list of user and of provider API - for each date
+[x] GET appointment api by app id
+[] POST rating API for provider
 [x] Service Providers End API’s
 [x] POST OTP Send API for Service Providers
 [x] POST Validate OTP API for Service Providers
@@ -19,6 +20,6 @@
 [x] POST Sign In API for Service Providers
 [x] PUT Change Password API for Service Providers
 [x] GET Service Provider Details API
-[] PUT Update Profile API for Service Providers
-[] GET Provider Appointments List API
-[] POST Update Service Acceptance API 
+[x] PUT Update Profile API for Service Providers
+[x] GET Provider Appointments List API
+[x] POST Update Service Acceptance API 

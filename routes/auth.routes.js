@@ -22,6 +22,8 @@ router.patch(
   controller.updatePassword,
 );
 
+router.patch("/", authorizeToken(TOKEN_TYPES.LOGIN), controller.updateDetails);
+
 // // validate otp
 router.post(
   "/validate-otp",

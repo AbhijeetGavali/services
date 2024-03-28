@@ -359,4 +359,23 @@ controller.updatePassword = async (req, res) => {
   }
 };
 
+controller.updateDetails = async (req, res) => {
+  try {
+    const data = { ...req.body, userId: req.user.id };
+
+    const updated = await service.updateDetails(data);
+
+    if (updated._id) {
+      return res.status(200).json({ code: 1, msg: "Updated successfully." });
+    } else {
+      return res
+        .status(304)
+        .json({ code: 0, msg: "No content found for modification" });
+    }
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
 module.exports = controller;
