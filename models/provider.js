@@ -10,6 +10,8 @@ const ProviderSchema = new mongooes.Schema({
   cost: { type: Number, default: 200 },
   location: { type: String },
   experience: { type: Number, default: 0 },
+  isApproved: { type: Boolean, default: false },
+  adhar: { type: String },
 });
 
 const Provider = mongooes.model("Provider", ProviderSchema);

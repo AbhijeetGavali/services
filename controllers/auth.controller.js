@@ -186,7 +186,9 @@ controller.signin = async (req, res) => {
         role: user.role,
         token_type: TOKEN_TYPES.LOGIN,
       });
-      return res.status(200).json({ code: 1, token });
+      return res
+        .status(200)
+        .json({ code: 1, token, type: user.role === ROLE.PROVIDER ? 1 : 0 });
     } else {
       return res.status(401).json({ code: 0, msg: "Invalid Credentials" });
     }
