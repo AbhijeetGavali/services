@@ -180,6 +180,7 @@ controller.signin = async (req, res) => {
 
     // comparing password with the password in db
     const compared = await bcrypt.compare(data.password, user.password);
+    console.log(user.role);
     if (compared) {
       const token = await getToken({
         id: user.id,

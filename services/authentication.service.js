@@ -14,7 +14,7 @@ service.createUser = async (data) => {
 };
 
 service.createProvider = async (data) => {
-  const user = await User.create({ ...data, ROLE: ROLE.PROVIDER });
+  const user = await User.create({ ...data, role: ROLE.PROVIDER });
   await Provider.create({
     service_description: data.service_description,
     payment_mode: data.payment_mode,
