@@ -2,6 +2,8 @@ const express = require("express");
 const controller = require("../controllers/auth.controller");
 const { authorizeToken } = require("../helpers/token");
 const { TOKEN_TYPES } = require("../config/token_type");
+const { checkRole } = require("../helpers/checkRole");
+const { ROLE } = require("../config/roles");
 
 const router = express.Router();
 
@@ -29,6 +31,34 @@ router.post(
   "/validate-otp",
   authorizeToken(TOKEN_TYPES.OTP_CHECK),
   controller.validateOTP,
+);
+
+router.delete(
+  "/:id",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  checkRole([ROLE.ADMIN]),
+  controller.deleteUser,
+);
+
+router.get(
+  "/u",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  checkRole([ROLE.ADMIN]),
+  controller.getAllUsers,
+);
+
+router.get(
+  "/p",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  checkRole([ROLE.ADMIN]),
+  controller.getAllProviders,
+);
+
+router.patch(
+  "/p/approve/:id",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  checkRole([ROLE.ADMIN]),
+  controller.approveProviders,
 );
 
 module.exports = router;

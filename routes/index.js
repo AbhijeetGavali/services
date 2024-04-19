@@ -5,6 +5,7 @@ const { authorizeToken } = require("../helpers/token");
 const router = express.Router();
 
 // routing in apis to controller modules
+
 router.use("/purchase", require("./purchase.routes"));
 router.use("/auth", require("./auth.routes"));
 router.use(

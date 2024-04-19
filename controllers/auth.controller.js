@@ -381,4 +381,57 @@ controller.updateDetails = async (req, res) => {
   }
 };
 
+controller.approveProviders = async (req, res) => {
+  try {
+    const data = { providerId: req.params.id, isApproved: true };
+
+    const updated = await service.approveProviders(data);
+    if (updated._id) {
+      return res.status(200).json({ code: 1, msg: "Updated successfully." });
+    } else {
+      return res
+        .status(304)
+        .json({ code: 0, msg: "No content found for modification" });
+    }
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
+controller.deleteUser = async (req, res) => {
+  try {
+    const data = { userId: req.params.id };
+
+    await service.deleteUser(data);
+
+    return res.status(200).json({ code: 1, msg: "Deleted successfully." });
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
+controller.getAllUsers = async (req, res) => {
+  try {
+    const result = await service.getAllUsers();
+
+    return res.status(200).json({ code: 1, result });
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
+controller.getAllProviders = async (req, res) => {
+  try {
+    const result = await service.getAllProviders();
+
+    return res.status(200).json({ code: 1, result });
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
 module.exports = controller;
