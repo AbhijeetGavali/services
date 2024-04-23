@@ -260,6 +260,69 @@ controller.sendResetLink = async (req, res) => {
   }
 };
 
+controller.generateBookingOTP = async (req, res) => {
+  try {
+    const data = { ...req.body };
+
+    // validating inputs
+    const errorMessages = validater([
+      { type: "string", value: data.bookingId },
+    ]);
+
+    // if error in sign in return bad request
+    if (errorMessages.length > 0) {
+      return res.status(400).json({ code: 0, msg: errorMessages });
+    }
+
+    // check if user is exist in database with that email or mobile number
+    const booking = await service.getBookingById(data.bookingId);
+    const provider = await service.getProviderById(booking?.providerId);
+    console.log(provider);
+    if (booking?._id) {
+      // tokenize id to send in email to client for resetting password
+
+      const OTP = generateOTP();
+
+      const token = await getToken(
+        {
+          bookingId: booking._id,
+          email: provider.email,
+          OTP_ACTION: OTP_ACTIONS.VERIFY_PROVIDER,
+          token_type: TOKEN_TYPES.OTP_CHECK,
+        },
+        "15min",
+      );
+
+      await connection.set(
+        provider.email + ":" + OTP_ACTIONS.VERIFY_PROVIDER,
+        OTP,
+      );
+      console.log(OTP);
+      const emailData = {
+        to: provider.email,
+        subject: "Reset Password for " + provider.email,
+        body: emailTemplate.bookingOTP(provider.email, OTP),
+      };
+
+      await emailService.sendEmail(emailData);
+      return res.status(200).json({
+        code: 1,
+        type: 1,
+        msg: "If your account exists with this email you will recirve an OTP to reset password",
+        token,
+      });
+    } else {
+      return res.status(200).json({
+        code: 0,
+        msg: "You do not have a active account with us",
+      });
+    }
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
 controller.validateOTP = async (req, res) => {
   try {
     const data = { ...req.body };
@@ -311,6 +374,33 @@ controller.validateOTP = async (req, res) => {
           token,
         });
       }
+
+      if (req.user.OTP_ACTION === OTP_ACTIONS.VERIFY_PROVIDER) {
+        const booking = await service.approveBookingOtp(req.user.bookingId);
+        const user = await service.getUserById(booking.userId);
+        const provider = await service.getProviderById(booking.providerId);
+
+        const emailDataUser = {
+          to: user.email,
+          subject: "Your service at HOME service Application has started",
+          body: emailTemplate.serviceStartedUser(user.email),
+        };
+
+        const emailDataProvider = {
+          to: provider.email,
+          subject: "You have started your service at HOME service Application",
+          body: emailTemplate.serviceStartedProvider(provider.email),
+        };
+
+        await emailService.sendEmail(emailDataUser);
+        await emailService.sendEmail(emailDataProvider);
+
+        return res.status(200).json({
+          code: 1,
+          msg: "Service booking OTP verified",
+        });
+      }
+
       return res.status(200).json({
         code: 0,
         msg: "Wrong OTP",

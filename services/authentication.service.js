@@ -1,4 +1,5 @@
 const { ROLE } = require("../config/roles");
+const Booking = require("../models/booking");
 const Provider = require("../models/provider");
 const User = require("../models/users");
 const service = {};
@@ -6,6 +7,16 @@ const service = {};
 service.getUser = async (email) => {
   const user = await User.findOne({ email: email, isDeleted: false });
   return user;
+};
+
+service.getUserById = async (id) => {
+  return await User.findById(id, { email: 1 });
+};
+
+service.getProviderById = async (id) => {
+  const provider = await Provider.findById(id, { userId: 1 });
+  console.log(id);
+  return await service.getUserById(provider.userId);
 };
 
 service.createUser = async (data) => {
@@ -45,6 +56,15 @@ service.updateDetails = async ({ userId, ...details }) => {
 
 service.approveProviders = async ({ providerId, ...details }) => {
   return await Provider.findByIdAndUpdate(providerId, details);
+};
+
+service.getBookingById = async (bookingId) => await Booking.findById(bookingId);
+
+service.approveBookingOtp = async (bookingId) => {
+  const booking = await Booking.findById(bookingId);
+  booking.otp_aproved = true;
+  booking.save();
+  return booking;
 };
 
 service.deleteUser = async ({ userId }) => {

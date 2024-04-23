@@ -51,7 +51,7 @@ const authorizeToken = (tokenFor) => async (req, res, next) => {
       } else {
         if (tokenFor == TOKEN_TYPES.LOGIN) {
           const user = await User.findById(result.id);
-          if (!user.isVerified)
+          if (!user?.isVerified)
             return res.status(400).json({ code: 0, msg: "Email not verified" });
         }
         if (result.token_type == tokenFor) {

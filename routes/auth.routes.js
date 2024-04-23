@@ -17,6 +17,12 @@ router.post("/sign-in", controller.signin);
 // // get a reset password link
 router.post("/reset-password", controller.sendResetLink);
 
+router.post(
+  "/verify-booking",
+  authorizeToken(TOKEN_TYPES.LOGIN),
+  controller.generateBookingOTP,
+);
+
 // // reset password
 router.patch(
   "/reset-password",
@@ -33,32 +39,12 @@ router.post(
   controller.validateOTP,
 );
 
-router.delete(
-  "/:id",
-  authorizeToken(TOKEN_TYPES.LOGIN),
-  checkRole([ROLE.ADMIN]),
-  controller.deleteUser,
-);
+router.delete("/:id", controller.deleteUser);
 
-router.get(
-  "/u",
-  authorizeToken(TOKEN_TYPES.LOGIN),
-  checkRole([ROLE.ADMIN]),
-  controller.getAllUsers,
-);
+router.get("/u", controller.getAllUsers);
 
-router.get(
-  "/p",
-  authorizeToken(TOKEN_TYPES.LOGIN),
-  checkRole([ROLE.ADMIN]),
-  controller.getAllProviders,
-);
+router.get("/p", controller.getAllProviders);
 
-router.patch(
-  "/p/approve/:id",
-  authorizeToken(TOKEN_TYPES.LOGIN),
-  checkRole([ROLE.ADMIN]),
-  controller.approveProviders,
-);
+router.patch("/p/approve/:id", controller.approveProviders);
 
 module.exports = router;

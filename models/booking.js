@@ -9,6 +9,7 @@ const BookingSchema = new mongooes.Schema({
   state: { type: String },
   pincode: { type: String },
   aproved: { type: Boolean, default: false },
+  otp_aproved: { type: Boolean, default: false },
 });
 
 const Booking = mongooes.model("Booking", BookingSchema);

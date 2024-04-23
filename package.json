@@ -12,7 +12,8 @@
     "worker": "nodemon worker/worker.js",
     "server": "node server.js",
     "watch": "node worker/worker.js",
-    "start": "concurrently -k -p \"[{name}]\" -n \"server,Worker\" -c \"cyan,green\" \"npm run server\" \"npm run watch\""
+    "start": "concurrently -k -p \"[{name}]\" -n \"server,Worker\" -c \"cyan,green\" \"npm run server\" \"npm run watch\"",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"server,Worker\" -c \"cyan,green\" \"npm run serve\" \"npm run worker\""
   },
   "dependencies": {
     "aws-sdk": "^2.1550.0",
