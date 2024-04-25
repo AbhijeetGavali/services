@@ -14,7 +14,7 @@ router.post(
   controller.approveBooking,
 );
 router.post(
-  "/slots/:id/approve",
+  "/slots/:id/reject",
   checkRole([ROLE.PROVIDER]),
   controller.rejectBooking,
 );
