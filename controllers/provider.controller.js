@@ -122,7 +122,47 @@ controller.approveBooking = async (req, res) => {
     const booking = await Booking.findById(data.bookingId);
 
     if (booking) {
-      booking.aproved = true;
+      booking.aproved = 1;
+      booking.save();
+
+      return res
+        .status(200)
+        .json({ code: 1, result: "Appointment aproved successfully" });
+    }
+    return res.status(400).json({
+      code: 0,
+      result: "Booking not available.",
+    });
+  } catch (error) {
+    console.error(req.baseUrl, req.body, error);
+    return res.status(500).json({ code: 0, msg: "Internal Server Error" });
+  }
+};
+
+controller.rejectBooking = async (req, res) => {
+  try {
+    const data = {
+      bookingId: req.params.id,
+      userId: req.user.id,
+      ...req.body,
+    };
+
+    const dataToCheck = [
+      { type: "string", value: data.providerId },
+      { type: "string", value: data.userId },
+    ];
+
+    const errorMessages = validater(dataToCheck);
+
+    // if error in sign in return bad request
+    if (errorMessages.length > 0) {
+      return res.status(400).json({ code: 0, msg: errorMessages });
+    }
+
+    const booking = await Booking.findById(data.bookingId);
+
+    if (booking) {
+      booking.aproved = -1;
       booking.save();
 
       return res

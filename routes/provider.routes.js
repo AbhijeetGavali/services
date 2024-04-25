@@ -13,6 +13,11 @@ router.post(
   checkRole([ROLE.PROVIDER]),
   controller.approveBooking,
 );
+router.post(
+  "/slots/:id/approve",
+  checkRole([ROLE.PROVIDER]),
+  controller.rejectBooking,
+);
 router.get("/slots/:id", controller.getPRovidersSlotsById);
 router.get("/slots/details/:id", controller.getPRovidersSlotsDetailsById);
 router.get("/:id", controller.getPRovidersById);

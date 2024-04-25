@@ -8,7 +8,7 @@ const BookingSchema = new mongooes.Schema({
   address: { type: String },
   state: { type: String },
   pincode: { type: String },
-  aproved: { type: Boolean, default: false },
+  aproved: { type: Number, default: 0 },
   otp_aproved: { type: Boolean, default: false },
 });
 
