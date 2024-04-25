@@ -102,7 +102,7 @@ controller.addBooking = async (req, res) => {
 controller.approveBooking = async (req, res) => {
   try {
     const data = {
-      providerId: req.params.id,
+      bookingId: req.params.id,
       userId: req.user.id,
       ...req.body,
     };
@@ -119,11 +119,8 @@ controller.approveBooking = async (req, res) => {
       return res.status(400).json({ code: 0, msg: errorMessages });
     }
 
-    const booking = await Booking.findOne({
-      providerId: data.providerId,
-      booking_date: data.booking_date,
-      time_slot: data.time_slot,
-    });
+    const booking = await Booking.findById(data.bookingId);
+
     if (booking) {
       booking.aproved = true;
       booking.save();
